@@ -22,7 +22,8 @@ public:
     Person();
     ~Person();
     Person(string filename);
-    Person(string f_name, string l_name, string b_date, string email, string email_type, string phone, string phone_type);
+    Person(string first_name, string last_name, string b_date, string email, string email_type, string phone, string phone_type);
+    //
     void print_person();
     void set_person();
     void set_person(string filename);

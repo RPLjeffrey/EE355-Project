@@ -14,6 +14,7 @@ private:
     int count;
     Person* search(Person* searchEntry);
     Person* search(string fname, string lname);
+    bool search(string lname);
 
 public:
     Network();

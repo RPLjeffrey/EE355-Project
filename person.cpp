@@ -19,6 +19,7 @@ Person::~Person(){
 
 
 Person::Person(string first_name, string last_name, string b_date, string new_email, string new_email_type, string new_phone, string new_phone_type){
+  //
     // TODO: Complete this method!
     // phone and email strings are in full version
     f_name = first_name;
