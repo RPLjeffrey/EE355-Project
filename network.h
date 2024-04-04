@@ -15,6 +15,7 @@ private:
     Person* search(Person* searchEntry);
     Person* search(string fname, string lname);
     bool search(string lname);
+    void clearNetwork();
 
 public:
     Network();

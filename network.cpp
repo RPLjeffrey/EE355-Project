@@ -34,9 +34,15 @@ Person* Network::search(Person* searchEntry){
     // TODO: Complete this method
     Person *current = head;
 
+    // outputFile << current->birthdate->get_date() << endl;
+    // outputFile << current->phone->get_contact("full") << endl;
+    // outputFile << current->email->get_contact("full") << endl;
+    //still need to add
+
     while (current != NULL)
     {
-      if (current == searchEntry) // compars adresses
+      if (current->f_name == searchEntry->f_name   &&   current->l_name == searchEntry->l_name   &&   current->birthdate->get_date() == searchEntry->birthdate->get_date()
+          &&   current->phone->get_contact("full") == searchEntry->phone->get_contact("full")   &&   current->email->get_contact("full") == searchEntry->email->get_contact("full"))
       {
         return current;
       }
