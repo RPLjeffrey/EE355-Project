@@ -4,7 +4,7 @@
 
 #include "person.h"
 #include "date.h"
-// You may need to add more libraries
+#include "misc.h"
 #include <stdlib.h>
 class Network{
 
@@ -20,6 +20,8 @@ public:
     Network(string fileName);
     ~Network();
     void printDB();
+    void loadDB(string fileName);
+    void saveDB(string fileName);
     void push_front(Person* newEntry);
     void push_back(Person* newEntry);
     bool remove(string fname, string lname);

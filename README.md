@@ -1,3 +1,1 @@
 # EE355-Project
-
-Note: To make the different class definitions work smoothly, we had to move the function definitions from their respective .cpp files to the .h files only. We ran into undefined reference errors when the member function definitions were placed in the .cpp files, which could not be "included" in later .cpp files. The .cpp files for the main classes used in this phase are used for demonstrating the member functions and testing.
