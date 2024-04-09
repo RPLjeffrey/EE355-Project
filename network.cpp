@@ -26,6 +26,15 @@ Network::Network(string fileName){
 }
 
 Network::~Network(){
+  Person* current = head;
+  while (current != NULL) {
+      Person* temp = current;
+      current = current->next;
+      delete temp;
+  }
+  head = NULL;
+  tail = NULL;
+  count = 0;
 }
 
 Person* Network::search(Person* searchEntry){
@@ -41,8 +50,7 @@ Person* Network::search(Person* searchEntry){
 
     while (current != NULL)
     {
-      if (current->f_name == searchEntry->f_name   &&   current->l_name == searchEntry->l_name   &&   current->birthdate->get_date() == searchEntry->birthdate->get_date()
-          &&   current->phone->get_contact("full") == searchEntry->phone->get_contact("full")   &&   current->email->get_contact("full") == searchEntry->email->get_contact("full"))
+      if (*current==*searchEntry)
       {
         return current;
       }
@@ -66,21 +74,20 @@ void Network::clearNetwork() {
 
 Person* Network::search(string fname, string lname){
     // New == for Person, only based on fname and lname
-
     // if found, returns a pointer to it, else returns NULL
     // TODO: Complete this method
     // Note: two ways to implement this, 1st making a new Person with fname and lname and and using search(Person*), 2nd using fname and lname directly.
     Person *current = head;
-
     while (current != NULL)
     {
-      if (current->f_name == fname  &&  current->l_name == lname)
-      {
-        return current;
-      }
-      current = current->next;
+        cout << "Checking: " << current->f_name << ", " << current->l_name << endl;
+        if (current->f_name == fname && current->l_name == lname)
+        {
+            cout << "Found: " << fname << ", " << lname << endl;
+            return current;
+        }
+        current = current->next;
     }
-
     return NULL;
 }
 
@@ -214,30 +221,29 @@ void Network::push_back(Person* newEntry){
 
 bool Network::remove(string fname, string lname){
     Person *person_rm = search(fname, lname);
-
     if(person_rm != NULL)
     {
         // If the person is the head of the list
         if (person_rm == head) {
             head = person_rm->next;
-            if (head != NULL) { // If the list is not becoming empty
+            if (head != NULL) {
                 head->prev = NULL;
             } else {
-                tail = NULL; // The list is now empty
+                tail = NULL; // The list is now empty, head is already NULL
             }
-        } else {
+        } else if (person_rm->prev != NULL) { // Ensuring prev isn't NULL
             person_rm->prev->next = person_rm->next;
         }
 
         // If the person is the tail of the list
         if (person_rm == tail) {
             tail = person_rm->prev;
-            if (tail != NULL) { // If the list is not becoming empty
+            if (tail != NULL) {
                 tail->next = NULL;
             } else {
-                head = NULL; // The list is now empty
+                head = NULL; // The list is now empty, tail is already NULL
             }
-        } else {
+        } else if (person_rm->next != NULL) { // Ensuring next isn't NULL
             person_rm->next->prev = person_rm->prev;
         }
 
@@ -247,7 +253,6 @@ bool Network::remove(string fname, string lname){
     }
 
     return false;
-
 }
 
 
