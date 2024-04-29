@@ -22,7 +22,7 @@ public:
     Network(string fileName);
     ~Network();
     void printDB();
-    void loadDB(string fileName);
+    void loadDB(const std::string &fileName);
     void saveDB(string fileName);
     void push_front(Person* newEntry);
     void push_back(Person* newEntry);

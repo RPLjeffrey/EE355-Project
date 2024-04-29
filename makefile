@@ -4,8 +4,8 @@ CC := g++
 # The Target Binary Program
 TARGET := networkApp
 
-# Flags
-CFLAGS := -g -Wall -Wextra
+# C++ Compiler Flags
+CXXFLAGS := -g -Wall -Wextra -std=c++17
 
 # Source Files
 SOURCES := date.cpp contact.cpp misc.cpp person.cpp network.cpp test_network.cpp
@@ -15,11 +15,11 @@ OBJECTS := $(SOURCES:.cpp=.o)
 
 # The Main Target
 $(TARGET): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $(TARGET)
+	$(CC) $(OBJECTS) -o $(TARGET) -pthread -lstdc++fs
 
 # To obtain object files
 %.o: %.cpp
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CXXFLAGS) -c $< -o $@
 
 # Clean
 clean:

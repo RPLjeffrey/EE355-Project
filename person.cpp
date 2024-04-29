@@ -3,6 +3,7 @@
 #include "date.h"
 #include "contact.h"
 #include "fstream"
+#include "misc.h"
 using namespace std;
 
 Person::Person(){
@@ -22,17 +23,18 @@ Person::Person(string first_name, string last_name, string b_date, string new_em
   //
     // TODO: Complete this method!
     // phone and email strings are in full version
-    f_name = first_name;
-    l_name = last_name;
+    first = first_name;
+    last = last_name;
     birthdate = new Date(b_date);
     email = new Email(new_email_type, new_email);
     phone = new Phone(new_phone_type, new_phone);
+    ID = codeName(first, last);
 
 }
 
-
 Person::Person(string filename){
     set_person(filename);
+    ID = codeName(first, last);
 }
 
 
@@ -50,10 +52,10 @@ void Person::set_person(){
 
     cout << "First Name: ";
     // pay attention to how we read first name, as it can have spaces!
-    std::getline(std::cin,f_name);
+    std::getline(std::cin,this->first);
 
     cout << "Last Name: ";
-    std::getline(std::cin,l_name);
+    std::getline(std::cin,this->last);
 
     cout << "Birthdate (M/D/YYYY): ";
     std::getline(std::cin,input_date);
@@ -90,9 +92,9 @@ void Person::set_person(string filename){
         cout << "Error opening file" << endl;
     } else {
         getline(person_file, input1);
-        f_name = input1;
+        this->first = input1;
         getline(person_file, input1);
-        l_name = input1;
+        this->last = input1;
         getline(person_file, input1);
         birthdate = new Date(input1);
 
@@ -105,15 +107,18 @@ void Person::set_person(string filename){
         input1 = input1.substr(1, input1.length()-2);
         person_file >> input2;
         email = new Email(input1, input2);
-
     }
 
+}
 
+void Person::makeFriend(Person* newFriend)
+{
+  friends.push_back(newFriend);
 }
 
 
 bool Person::operator==(const Person& rhs){
-    if (this->f_name == rhs.f_name   &&   this->l_name == rhs.l_name   &&   this->birthdate->get_date() == rhs.birthdate->get_date())
+    if (this->first == rhs.first   &&   this->last == rhs.last   &&   this->birthdate->get_date() == rhs.birthdate->get_date())
     {
       return 1;
     }
@@ -128,8 +133,19 @@ bool Person::operator!=(const Person& rhs){
 
 void Person::print_person(){
     // Already implemented for you! Do not change!
-    cout << this->l_name  << ", " << this->f_name << endl;
+    cout << this->last  << ", " << this->first << endl;
     birthdate->print_date();
     phone->print();
     email->print();
+
+    for(auto it = friends.begin(); it != friends.end(); ++it)
+    {
+      cout << (*it)->get_id() << endl;
+    }
+}
+
+string Person::get_id()
+{
+  string output = ID + " (" + first + " " + last + ")";
+  return output;
 }

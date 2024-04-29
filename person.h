@@ -9,22 +9,31 @@ class Person{
     friend class Network;
 
 private:
-    string f_name;
-    string l_name;
+    string first;
+    string last;
     Date *birthdate;
     Email *email;
     Phone *phone;
     // the following to attributes are used in the linked list.
     Person* next;
     Person* prev;
+    string ID;
+
+    vector <Person *> friends;
+
 
 public:
+
     Person();
     ~Person();
+    Person(string, string);
     Person(string filename);
-    Person(string first_name, string last_name, string b_date, string email, string email_type, string phone, string phone_type);
+    Person(string, string, string, string, string, string, string);
     //
+    string get_id();
     void print_person();
+    void print_person_2();
+    void makeFriend(Person*);
     void set_person();
     void set_person(string filename);
     bool operator==(const Person& rhs);

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <filesystem>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -80,10 +81,8 @@ Person* Network::search(string fname, string lname){
     Person *current = head;
     while (current != NULL)
     {
-        cout << "Checking: " << current->f_name << ", " << current->l_name << endl;
-        if (current->f_name == fname && current->l_name == lname)
+        if (current->first == fname && current->last == lname)
         {
-            cout << "Found: " << fname << ", " << lname << endl;
             return current;
         }
         current = current->next;
@@ -98,7 +97,7 @@ bool Network::search(string lname)
 
     while (current != NULL)
     {
-      if(current->l_name == lname)
+      if(current->last == lname)
       {
         current->print_person();
         cout << "--------------------" << endl;
@@ -112,22 +111,35 @@ bool Network::search(string lname)
 
 
 
-void Network::loadDB(string filename){
-
+void Network::loadDB(const std::string& filename) {
     clearNetwork();
-    ifstream file(filename);
-
+    std::ifstream file(filename);
     if (!file.is_open()) {
-        // If file with name FILENAME does not exist:
-        cout << "File FILENAME does not exist!" << endl;
+        std::cout << "File " << filename << " does not exist!" << std::endl;
         return;
     }
 
-    string f_name, l_name, b_date, email_info, phone_info, line;
-    while (getline(file, f_name)) {
-        if (f_name.empty() || f_name == "--------------------") continue;
+    std::string line, full_name, b_date, email_info, phone_info;
+    while (getline(file, line)) {
+        if (line.empty() || line == "--------------------") continue;
 
-        getline(file, l_name);
+        // Read full name and split it into first and last name
+        full_name = line;
+        getline(file, line);
+        full_name += " " + line;  // append the last name part
+
+        std::istringstream iss(full_name);
+        std::vector<std::string> names;
+        std::string name;
+        while (iss >> name) {
+            names.push_back(name);
+        }
+        std::string first_names = names.front();
+        for (size_t i = 1; i < names.size() - 1; ++i) {
+            first_names += " " + names[i];
+        }
+        std::string last_name = names.back();
+
         getline(file, b_date);
 
         getline(file, email_info);
@@ -138,17 +150,21 @@ void Network::loadDB(string filename){
         string phone_type = phone_info.substr(1, phone_info.find(')') - 1);
         string phone = phone_info.substr(phone_info.find(')') + 2);
 
-        Person* newPerson = new Person(f_name, l_name, b_date, email, email_type, phone, phone_type);
-        this->push_back(newPerson);
+        // Create new person and add to network
+
+        Person* newPerson = new Person(first_names, last_name, b_date, email, email_type, phone, phone_type);
+        push_back(newPerson);
 
         // Skip the separator line if it exists before the next person block
         getline(file, line);
     }
 
-    // If file is loaded successfully, also print the count of people in it:
-    cout << "Network loaded from " << filename << " with " << count << " people \n";
+    // Print the count of people in the network
+    std::cout << "Network loaded from " << filename << " with " << count << " people \n";
     file.close();
+    printDB();
 }
+
 
 void Network::saveDB(string filename){
     // TODO: Complete this method
@@ -163,7 +179,7 @@ void Network::saveDB(string filename){
     // Iterate over each person in the network database
     while (current != NULL)
     {
-      outputFile << current->l_name << ", " << current->f_name << endl;
+      outputFile << current->last << ", " << current->first << endl;
       outputFile << current->birthdate->get_date() << endl;
       outputFile << current->phone->get_contact("full") << endl;
       outputFile << current->email->get_contact("full") << endl;
@@ -272,6 +288,7 @@ void Network::showMenu(){
         cout << "3. Add a new person \n";
         cout << "4. Remove a person \n";
         cout << "5. Print people with last name  \n";
+        cout << "6. Connect  \n";
         cout << "\nSelect an option ... ";
 
         if (cin >> opt) {
@@ -371,6 +388,51 @@ void Network::showMenu(){
             {
               cout << "Person not found! \n";
             }
+
+        }
+        else if (opt == 6)
+        {
+          cout << "Make friends:" << endl;
+
+          string first1, last1, first2, last2;
+          Person *person1;
+          Person *person2;
+
+          cout << "Person 1" << endl;
+          cout << "First Name: ";
+          cin >> first1;
+          cout << "Last Name: ";
+          cin >> last1;
+
+          person1 = search(first1, last1);
+          if(person1 == NULL)
+          {
+            cout << "Person not found" << endl;
+          } else
+          {
+            cout << "Person 2" << endl;
+            cout << "First Name: ";
+            cin >> first2;
+            cout << "Last Name: ";
+            cin >> last2;
+
+            person2 = search(first2, last2);
+
+            if(person2 == NULL)
+            {
+              cout << "Person not found" << endl;
+            } else
+            {
+              person1->makeFriend(person2);
+              person2->makeFriend(person1);
+
+              person1->print_person();
+              cout << endl;
+              person2->print_person();
+            }
+          }
+
+
 
         }
 
