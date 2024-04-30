@@ -3,14 +3,14 @@ Skender
 01/01/2003
 (School) jskender@usc.edu
 (Cell) 123-123-1234
-trumanburbank,
+trumanburbank,victorgutierrez,
 ------------------------------
 Victor
 Gutierrez
 09/16/2004
 (School) vagutier@usc.edu
 (Cell) 123-123-1234
-
+jasonskender,elliottmeeks,
 ------------------------------
 Julia Scarlett Elizabeth
 Louis-Dreyfus
@@ -19,8 +19,8 @@ Louis-Dreyfus
 (Office) 310-291-7482
 
 ------------------------------
-Martin Van
-Nostrand
+Martin
+Van Nostrand
 07/24/1949
 (Yahoo) myemail@yahoo.com
 (Home) 224-432-5809
@@ -38,7 +38,7 @@ Meeks
 10/07/2001
 (School) emeeks@usc.edu
 (Personal) 510-520-1709
-natalieionescu,
+natalieionescu,victorgutierrez,
 ------------------------------
 Natalie
 Ionescu

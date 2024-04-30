@@ -163,18 +163,25 @@ string Person::get_plain_id()
 void Person::pprint_friends() {
   cout << this->first << ", " << this->last << endl;
   cout << "------------------------------" << endl;
+
   vector<string> friend_ids;
   vector<Person*> sorted_friends;
+  // friend_map is used to map the unique id to the pointer of the Person in the friend list
   map<string, Person*> friend_map;
+  // Iterates through friend list of pointesr
   for(auto it = friends.begin(); it != friends.end(); ++it)
   {
+    // Maps the unique id to the pointer
     friend_map[(*it)->get_plain_id()] = *it;
+    // Stores the ids of the friends in friend_ids vector
     friend_ids.push_back((*it)->get_plain_id());
-    //cout << (*it)->first << ", " << (*it)->last << endl;
   }
+  // Sorts friend_ids in alphabetic order
   sort(friend_ids.begin(), friend_ids.end());
-  for(auto it2 = friend_ids.begin(); it2 != friend_ids.end(); ++it2)
-  {
+
+  // Iterates through sorted vector of unique ids
+  for(auto it2 = friend_ids.begin(); it2 != friend_ids.end(); ++it2) {
+    // Accesses the pointer to the Person object associated with the id to get proper first and last name
     cout << friend_map[*it2]->first << ", " << friend_map[*it2]->last << endl;
   }
 

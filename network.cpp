@@ -121,13 +121,18 @@ void Network::loadDB(const std::string& filename) {
 
     vector<string> friend_info;
 
-    std::string line, full_name, b_date, email_info, phone_info;
+    string line, full_name, b_date, email_info, phone_info;
+    string first_name, last_name;
     while (getline(file, line)) {
         if (line.empty() || line == "--------------------") continue;
 
         // Read full name and split it into first and last name
+        first_name = line;
+
         full_name = line;
         getline(file, line);
+        last_name = line;
+
         full_name += " " + line;  // append the last name part
 
         std::istringstream iss(full_name);
@@ -140,7 +145,7 @@ void Network::loadDB(const std::string& filename) {
         for (size_t i = 1; i < names.size() - 1; ++i) {
             first_names += " " + names[i];
         }
-        std::string last_name = names.back();
+        //std::string last_name = names.back();
 
         getline(file, b_date);
 
@@ -153,8 +158,7 @@ void Network::loadDB(const std::string& filename) {
         string phone = phone_info.substr(phone_info.find(')') + 2);
 
         // Create new person and add to network
-
-        Person* newPerson = new Person(first_names, last_name, b_date, email, email_type, phone, phone_type);
+        Person* newPerson = new Person(first_name, last_name, b_date, email, email_type, phone, phone_type);
         push_back(newPerson);
 
         string friend_list;
@@ -177,7 +181,6 @@ void Network::loadDB(const std::string& filename) {
     while(ss.good()) {
         string substr;
         getline( ss, substr, ',' );
-        cout << substr << endl;
         Person* friend_temp = friend_current;
         while (friend_temp != NULL) {
           if (friend_temp->get_plain_id() == substr) {
@@ -411,9 +414,9 @@ void Network::showMenu(){
             string fname, lname;
             cout << "Removing a person \n";
             cout << "First name: ";
-            std::getline(std::cin,fname);
+            getline(cin, fname);
             cout << "Last name: ";
-            std::getline(std::cin,lname);
+            getline(cin, lname);
 
             if (remove(fname,lname))
             {
@@ -431,7 +434,7 @@ void Network::showMenu(){
             string lastname;
             cout << "Print people with last name \n";
             cout << "Last name: ";
-            std::getline(std::cin,lastname);
+            getline(cin, lastname);
 
             if(!search(lastname))
             {
@@ -449,9 +452,11 @@ void Network::showMenu(){
 
           cout << "Person 1" << endl;
           cout << "First Name: ";
-          cin >> first1;
+          getline(cin, first1);
+          //cin >> first1;
           cout << "Last Name: ";
-          cin >> last1;
+          getline(cin, last1);
+          //cin >> last1;
 
           person1 = search(first1, last1);
           if(person1 == NULL)
@@ -461,9 +466,11 @@ void Network::showMenu(){
           {
             cout << "Person 2" << endl;
             cout << "First Name: ";
-            cin >> first2;
+            getline(cin, first2);
+            //cin >> first2;
             cout << "Last Name: ";
-            cin >> last2;
+            getline(cin, last2);
+            //cin >> last2;
 
             person2 = search(first2, last2);
 
@@ -491,7 +498,7 @@ void Network::showMenu(){
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         cout << "\n\nPress Enter key to go back to main menu ... ";
         string temp;
-        std::getline (std::cin, temp);
+        getline(cin, temp);
         cout << "\033[2J\033[1;1H";
     }
 }
