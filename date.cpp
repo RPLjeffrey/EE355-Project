@@ -119,3 +119,7 @@ string Date::get_date()
   return oss.str();
 
 }
+
+string Date::get_og_date() {
+  return original_date_string;
+}

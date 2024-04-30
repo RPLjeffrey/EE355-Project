@@ -11,7 +11,7 @@ class Network{
 private:
     Person* head;
     Person* tail;
-    int count;
+    int member_count;
     Person* search(Person* searchEntry);
     Person* search(string fname, string lname);
     bool search(string lname);

@@ -18,6 +18,7 @@ protected:
 public:
 	virtual void print() = 0;
   virtual string get_contact(string style="full") = 0;
+	virtual string get_db_contact() = 0;
 	virtual void set_contact() = 0;
 };
 
@@ -32,6 +33,7 @@ public:
     // Implementing the virtual functions
     void print() override;
     string get_contact(string style) override;
+		string get_db_contact() override;
     void set_contact() override;
 };
 
@@ -46,6 +48,7 @@ public:
     // virtual function implementation
     void print() override;
     string get_contact(string style) override;
+		string get_db_contact() override;
     void set_contact() override;
 };
 

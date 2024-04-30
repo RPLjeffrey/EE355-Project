@@ -15,7 +15,7 @@ namespace fs = std::filesystem;
 Network::Network(){
     head = NULL;
     tail = NULL;
-    count = 0;
+    member_count = 0;
 }
 
 
@@ -35,7 +35,7 @@ Network::~Network(){
   }
   head = NULL;
   tail = NULL;
-  count = 0;
+  member_count = 0;
 }
 
 Person* Network::search(Person* searchEntry){
@@ -70,7 +70,7 @@ void Network::clearNetwork() {
     }
     head = NULL;
     tail = NULL;
-    count = 0;
+    member_count = 0;
 }
 
 Person* Network::search(string fname, string lname){
@@ -119,6 +119,8 @@ void Network::loadDB(const std::string& filename) {
         return;
     }
 
+    vector<string> friend_info;
+
     std::string line, full_name, b_date, email_info, phone_info;
     while (getline(file, line)) {
         if (line.empty() || line == "--------------------") continue;
@@ -155,12 +157,43 @@ void Network::loadDB(const std::string& filename) {
         Person* newPerson = new Person(first_names, last_name, b_date, email, email_type, phone, phone_type);
         push_back(newPerson);
 
+        string friend_list;
+        getline(file, friend_list);
+        friend_info.push_back(friend_list);
+
         // Skip the separator line if it exists before the next person block
         getline(file, line);
     }
 
-    // Print the count of people in the network
-    std::cout << "Network loaded from " << filename << " with " << count << " people \n";
+// Establishing friend connections
+  Person* friend_current = head;
+  int names_index = 0;
+  while (friend_current != NULL) {
+    string friends = friend_info[names_index];
+    //string delimiter = ",";
+    stringstream ss(friends);
+    //vector<string> result;
+
+    while(ss.good()) {
+        string substr;
+        getline( ss, substr, ',' );
+        cout << substr << endl;
+        Person* friend_temp = friend_current;
+        while (friend_temp != NULL) {
+          if (friend_temp->get_plain_id() == substr) {
+            friend_current->makeFriend(friend_temp);
+            friend_temp->makeFriend(friend_current);
+          }
+          friend_temp = friend_temp->next;
+        }
+        // result.push_back(substr);
+    }
+    names_index++;
+    friend_current = friend_current->next;
+  }
+
+    // Print the member_count of people in the network
+    std::cout << "Network loaded from " << filename << " with " << member_count << " people \n";
     file.close();
     printDB();
 }
@@ -179,13 +212,29 @@ void Network::saveDB(string filename){
     // Iterate over each person in the network database
     while (current != NULL)
     {
-      outputFile << current->last << ", " << current->first << endl;
-      outputFile << current->birthdate->get_date() << endl;
-      outputFile << current->phone->get_contact("full") << endl;
-      outputFile << current->email->get_contact("full") << endl;
-      //still need to add
-      outputFile << "------------------------------" << endl;
-      current = current->next;
+      outputFile << current->first << endl;
+      outputFile << current->last << endl;
+      outputFile << current->birthdate->get_og_date() << endl;
+      outputFile << current->email->get_db_contact() << endl;
+      outputFile << current->phone->get_db_contact() << endl;
+      vector<Person *> temp_friends = current->friends;
+      vector<string> temp_friend_names;
+
+      // Converts friends from pointers to string ids
+      if (!temp_friends.empty()) {
+          // iterates through vector of pointers
+        for(auto it = temp_friends.begin(); it != temp_friends.end(); ++it) {
+          outputFile << (*it)->get_plain_id() << ",";
+        }
+        outputFile << endl;
+        } else {
+          outputFile << endl;
+        }
+
+
+        //still need to add
+        outputFile << "------------------------------" << endl;
+        current = current->next;
     }
 
     outputFile.close();
@@ -196,7 +245,7 @@ void Network::printDB(){
     // Leave me alone! I know how to print!
     // Note: Notice that we don't need to update this even after adding to Personattributes
     // This is a feature of OOP, classes are supposed to take care of themselves!
-    cout << "Number of people: " << count << endl;
+    cout << "Number of people: " << member_count << endl;
     cout << "------------------------------" << endl;
     Person* ptr = head;
     while(ptr != NULL){
@@ -218,7 +267,7 @@ void Network::push_front(Person* newEntry){
         tail = newEntry;
 
     head = newEntry;
-    count++;
+    member_count++;
 }
 
 void Network::push_back(Person* newEntry){
@@ -231,7 +280,7 @@ void Network::push_back(Person* newEntry){
         head = newEntry;
 
     tail = newEntry;
-    count++;
+    member_count++;
 }
 
 
@@ -264,7 +313,7 @@ bool Network::remove(string fname, string lname){
         }
 
         delete person_rm;
-        count--;
+        member_count--;
         return true;
     }
 
@@ -426,13 +475,12 @@ void Network::showMenu(){
               person1->makeFriend(person2);
               person2->makeFriend(person1);
 
-              person1->print_person();
-              cout << endl;
-              person2->print_person();
+
             }
           }
 
-
+          cout << endl;
+          person1->pprint_friends();
 
         }
 

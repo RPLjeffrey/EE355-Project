@@ -10,14 +10,15 @@ using namespace std;
 class Date {
     // TODO: private or protected? Look at your children!
 protected:
-    string original_date_string;
     int month;
     string month_name;
     int day;
     int year;
+    string original_date_string;
 public:
     Date(string date);
     void print_date();
     string get_date();
+    string get_og_date();
 };
 #endif

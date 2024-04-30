@@ -4,6 +4,7 @@
 #include "contact.h"
 #include "fstream"
 #include "misc.h"
+#include <map>
 using namespace std;
 
 Person::Person(){
@@ -113,7 +114,11 @@ void Person::set_person(string filename){
 
 void Person::makeFriend(Person* newFriend)
 {
-  friends.push_back(newFriend);
+    int cnt = count(friends.begin(), friends.end(), newFriend);
+    if (cnt == 0) {
+      friends.push_back(newFriend);
+    }
+
 }
 
 
@@ -148,4 +153,29 @@ string Person::get_id()
 {
   string output = ID + " (" + first + " " + last + ")";
   return output;
+}
+
+string Person::get_plain_id()
+{
+  return ID;
+}
+
+void Person::pprint_friends() {
+  cout << this->first << ", " << this->last << endl;
+  cout << "------------------------------" << endl;
+  vector<string> friend_ids;
+  vector<Person*> sorted_friends;
+  map<string, Person*> friend_map;
+  for(auto it = friends.begin(); it != friends.end(); ++it)
+  {
+    friend_map[(*it)->get_plain_id()] = *it;
+    friend_ids.push_back((*it)->get_plain_id());
+    //cout << (*it)->first << ", " << (*it)->last << endl;
+  }
+  sort(friend_ids.begin(), friend_ids.end());
+  for(auto it2 = friend_ids.begin(); it2 != friend_ids.end(); ++it2)
+  {
+    cout << friend_map[*it2]->first << ", " << friend_map[*it2]->last << endl;
+  }
+
 }

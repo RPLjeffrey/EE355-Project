@@ -30,6 +30,11 @@ string Email::get_contact(string style){
         return email_addr;
 }
 
+string Email::get_db_contact(){
+    // Format for DB implementation
+        return "(" + type + ") " + email_addr;
+}
+
 
 void Email::print(){
     // Note: get_contact is called with default argument
@@ -81,6 +86,11 @@ string Phone::get_contact(string style){
         return "Phone (" + type + "): " + phone_num;
     else
         return phone_num;
+}
+
+string Phone::get_db_contact(){
+    // Format for DB implementation
+        return "(" + type + ") " + phone_num;
 }
 
 

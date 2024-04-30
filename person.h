@@ -31,6 +31,7 @@ public:
     Person(string, string, string, string, string, string, string);
     //
     string get_id();
+    string get_plain_id();
     void print_person();
     void print_person_2();
     void makeFriend(Person*);
@@ -38,5 +39,6 @@ public:
     void set_person(string filename);
     bool operator==(const Person& rhs);
     bool operator!=(const Person& rhs);
+    void pprint_friends();
 };
 #endif
